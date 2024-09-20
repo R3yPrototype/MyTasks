@@ -16,7 +16,8 @@ def get_db_connection():
             user=os.getenv('DB_USER', 'todousers_user'),
             password=os.getenv('DB_PASSWORD', 'ujsMFFSJLsJdjryIxBWi87uBgqt090dx'),
             database=os.getenv('DB_NAME', 'todousers'),
-            port=5432
+            port=int(os.getenv('DB_PORT', 3306))
+
         )
     except pymysql.MySQLError as e:
         print(f"Error connecting to the database: {e}")
