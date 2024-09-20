@@ -7,7 +7,6 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 def get_db_connection():
-<<<<<<< HEAD
     return pymysql.connect(
         host='127.0.0.1',
         user='root',
@@ -15,7 +14,6 @@ def get_db_connection():
         database='todousers',
         port = 3306
     )
-=======
     try:
         return pymysql.connect(
             host='127.0.0.1',
@@ -27,7 +25,6 @@ def get_db_connection():
     except pymysql.MySQLError as e:
         print(f"Error connecting to the database: {e}")
         return None
->>>>>>> f18aef400a140866082a1c4ff3f28e5d6b28f4da
 
 @app.route('/favicon.ico')
 def favicon():
