@@ -7,13 +7,14 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 def get_db_connection():
-   return pymysql.connect(
-        host='127.0.0.1',
-        user='root',
-        password='Nitn3lav3al0cin',
-        database='todousers',
-        port = 3306
+    return pymysql.connect(
+        host=os.getenv('DB_HOST', '127.0.0.1'),  # Change this to your database host
+        user=os.getenv('DB_USER', 'root'),      # Change to your database user
+        password=os.getenv('DB_PASS', 'Nitn3lav3al0cin'),  # Change to your database password
+        database=os.getenv('DB_NAME', 'todousers'),  # Change to your database name
+        port=int(os.getenv('DB_PORT', 3306))     # Default to 3306 if not set
     )
+
 
 @app.route('/favicon.ico')
 def favicon():
