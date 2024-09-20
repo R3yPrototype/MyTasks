@@ -1,0 +1,92 @@
+html, body {
+    width: 70%;
+    margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+	color: #FFF;
+	background-image: linear-gradient(to bottom right, rgb(71, 77, 95), rgb(19, 28, 52));
+}
+@media (max-width:420px){
+        body{
+            width: 100%;
+        }
+}
+
+li{
+    text-align: left;
+    margin: 20px;
+    background-color: rgb(99, 114, 137);
+    height: 23.5px;
+}
+
+.checkItem{
+    float: right;
+    
+}
+
+li button{
+    float: right;
+    border: 0;
+    height: 22px;
+    border-radius: 10%;
+    padding: 3px;
+}
+
+li button:hover{
+    color: blue;
+}
+
+.editAtribute{
+    width: 80px;
+    float:left;
+}
+
+.logOut{
+    float:right;
+}
+
+a{
+    color:white;
+}
+
+/* Add this CSS to your style.css */
+
+.editAttribute {
+    display: inline-block; /* Ensures it stays in the same line as other elements */
+    width: auto; /* Adjust width as needed */
+    margin-right: 5px; /* Space between input and other elements */
+}
+
+.edit-button, .delete-button {
+    margin-left: 5px; /* Space between buttons */
+}
+
+.logoutBut{
+    float:right;
+}
+
+form{
+    text-align: center;
+}
+
+form input{
+    display: inline-block;
+    align-self: center;
+}
+
+footer{
+    width:50%;
+    size:10px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    font-family: 'bold';
+}
+
+.line-footer{
+    height: 1px;
+    background: black;
+    
+}

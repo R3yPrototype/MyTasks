@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyTasks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+
+</head>
+<body>
+    <h1>SignUp</h1>
+    <form method="POST" action="{{ url_for('signup') }}">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <input type="submit" value="Sign Up">
+    </form>
+    <a href="{{url_for('login')}}">Already have an account?Log in.</a>
+    
+    <footer>
+        <div class="line-footer"></div>
+        <p>© 2024 All rights reserved | Radu Valentin.</p>
+    </footer>
+    <script src="js.js"></script>
+</body>
+</html>

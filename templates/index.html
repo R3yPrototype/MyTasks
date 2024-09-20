@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyTasks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+
+</head>
+<body>
+    <form action="{{ url_for('logout') }}" id="logoutButton" method="POST">
+        <button class="logoutBut" type="submit">Logout</button>
+    </form>
+    
+    <h2>To do List</h2>
+    <main id="toDoContainer">
+        <form id="toDoForm" action="/insert" method="POST">
+            <input id="toDoItem" name="toDoItem" type="text" placeholder="Add to do">
+            <button type="submit">Add</button>
+        </form>
+        <ol id="toDoList">
+            {% for task in tasks %}
+                <li data-task-id="{{ task[0] }}">
+                    <input  class="checkItem" type="checkbox" {% if task[2] %}checked{% endif %}>
+                    <span>{{ task[1] }}</span>
+                    <button class="delete-button">Delete</button>
+                    <button class="edit-button">Edit</button>
+                </li>
+            {% endfor %}
+        </ol>
+    </main>
+    <footer>
+        <div class="line-footer"></div>
+        <p>© 2024 All rights reserved | Radu Valentin.</p>
+    </footer>
+    <script src="{{ url_for('static', filename='js.js') }}"></script>
+</body>
+</html>
+
+
+
