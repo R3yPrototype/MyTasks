@@ -12,10 +12,10 @@ load_dotenv()
 def get_db_connection():
     try:
         return pymysql.connect(
-            host=os.getenv('dpg-crmpeklds78s73e9vjr0-a'),
-            user=os.getenv('todousers_user'),
-            password=os.getenv('ujsMFFSJLsJdjryIxBWi87uBgqt090dx'),
-            database=os.getenv('todousers'),
+            host=os.getenv('DB_HOST, dpg-crmpeklds78s73e9vjr0-a'),
+            user=os.getenv('DB_USER', 'todousers_user'),
+            password=os.getenv('DB_PASSWORD', 'ujsMFFSJLsJdjryIxBWi87uBgqt090dx'),
+            database=os.getenv('DB_NAME', 'todousers'),
             port=5432
         )
     except pymysql.MySQLError as e:
