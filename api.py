@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify,send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, send_from_directory
 import pymysql
 import bcrypt
 import os
@@ -7,14 +7,17 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 def get_db_connection():
-    return pymysql.connect(
-        host='127.0.0.1',
-        user='root',
-        password='Nitn3lav3al0cin',
-        database='todousers',
-        port = 3306
-    )
-
+    try:
+        return pymysql.connect(
+            host='127.0.0.1',
+            user='root',
+            password='Nitn3lav3al0cin',
+            database='todousers',
+            port=3306
+        )
+    except pymysql.MySQLError as e:
+        print(f"Error connecting to the database: {e}")
+        return None
 
 @app.route('/favicon.ico')
 def favicon():
@@ -24,8 +27,10 @@ def favicon():
 def index():
     if 'email' in session:
         email = session['email']
-
         connection = get_db_connection()
+        if connection is None:
+            return "Database connection error", 500
+
         try:
             with connection.cursor() as cursor:
                 cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
@@ -36,6 +41,9 @@ def index():
                     tasks = cursor.fetchall()
                 else:
                     tasks = []
+        except pymysql.MySQLError as e:
+            print(f"Database error: {e}")
+            return "Database query error", 500
         finally:
             connection.close()
 
@@ -51,6 +59,9 @@ def insert():
 
         email = session.get('email')
         connection = get_db_connection()
+        if connection is None:
+            return "Database connection error", 500
+
         try:
             with connection.cursor() as cursor:
                 cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
@@ -60,6 +71,9 @@ def insert():
                     sql = "INSERT INTO tasks (task_content, is_completed, user_id) VALUES (%s, %s, %s)"
                     cursor.execute(sql, (data_content, int(checked), user_id))
                     connection.commit()
+        except pymysql.MySQLError as e:
+            print(f"Database error: {e}")
+            return "Database insert error", 500
         finally:
             connection.close()
 
@@ -69,11 +83,17 @@ def insert():
 def edit(task_id):
     content = request.json.get('task_content')
     connection = get_db_connection()
+    if connection is None:
+        return jsonify(success=False, error="Database connection error"), 500
+
     try:
         with connection.cursor() as cursor:
             sql = "UPDATE tasks SET task_content = %s WHERE id = %s"
             cursor.execute(sql, (content, task_id))
             connection.commit()
+    except pymysql.MySQLError as e:
+        print(f"Database error: {e}")
+        return jsonify(success=False, error="Database update error"), 500
     finally:
         connection.close()
     
@@ -82,11 +102,17 @@ def edit(task_id):
 @app.route('/delete/<int:task_id>', methods=['POST'])
 def delete(task_id):
     connection = get_db_connection()
+    if connection is None:
+        return jsonify(success=False, error="Database connection error"), 500
+
     try:
         with connection.cursor() as cursor:
             sql = "DELETE FROM tasks WHERE id = %s"
             cursor.execute(sql, (task_id,))
             connection.commit()
+    except pymysql.MySQLError as e:
+        print(f"Database error: {e}")
+        return jsonify(success=False, error="Database delete error"), 500
     finally:
         connection.close()
     
@@ -96,11 +122,17 @@ def delete(task_id):
 def update(task_id):
     is_completed = request.json.get('is_completed')
     connection = get_db_connection()
+    if connection is None:
+        return jsonify(success=False, error="Database connection error"), 500
+
     try:
         with connection.cursor() as cursor:
             sql = "UPDATE tasks SET is_completed = %s WHERE id = %s"
             cursor.execute(sql, (int(is_completed), task_id))
             connection.commit()
+    except pymysql.MySQLError as e:
+        print(f"Database error: {e}")
+        return jsonify(success=False, error="Database update error"), 500
     finally:
         connection.close()
     
@@ -117,11 +149,17 @@ def signup():
             return f"Missing form field: {e.args[0]}", 400
 
         connection = get_db_connection()
+        if connection is None:
+            return "Database connection error", 500
+
         try:
             with connection.cursor() as cursor:
                 sql = "SELECT COUNT(*) FROM users WHERE email = %s"
                 cursor.execute(sql, (email,))
                 count = cursor.fetchone()[0]
+        except pymysql.MySQLError as e:
+            print(f"Database error: {e}")
+            return "Database query error", 500
         finally:
             connection.close()
 
@@ -131,11 +169,17 @@ def signup():
         password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
         connection = get_db_connection()
+        if connection is None:
+            return "Database connection error", 500
+
         try:
             with connection.cursor() as cursor:
                 sql = "INSERT INTO users (username, email, hashed_password) VALUES (%s, %s, %s)"
                 cursor.execute(sql, (username, email, password_hash.decode('utf-8')))
                 connection.commit()
+        except pymysql.MySQLError as e:
+            print(f"Database error: {e}")
+            return "Database insert error", 500
         finally:
             connection.close()
 
@@ -154,11 +198,17 @@ def login():
             return f"Missing form field: {e.args[0]}", 400
 
         connection = get_db_connection()
+        if connection is None:
+            return "Database connection error", 500
+
         try:
             with connection.cursor() as cursor:
                 sql = "SELECT hashed_password FROM users WHERE email = %s"
                 cursor.execute(sql, (email,))
                 result = cursor.fetchone()
+        except pymysql.MySQLError as e:
+            print(f"Database error: {e}")
+            return "Database query error", 500
         finally:
             connection.close()
 
@@ -176,6 +226,6 @@ def logout():
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5001, debug=False) 
+    app.run(host='0.0.0.0', port=5001, debug=True)
 
 
