@@ -2,9 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 import pymysql
 import bcrypt
 import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
+load_dotenv()
 
 def get_db_connection():
     try:
