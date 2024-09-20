@@ -8,10 +8,11 @@ app.secret_key = os.urandom(24)
 
 def get_db_connection():
     return pymysql.connect(
-        host='localhost',
+        host='127.0.0.1',
         user='root',
         password='Nitn3lav3al0cin',
-        database='todousers'
+        database='todousers',
+        port = 3306
     )
 
 @app.route('/favicon.ico')
