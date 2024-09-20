@@ -7,13 +7,6 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 def get_db_connection():
-    return pymysql.connect(
-        host='127.0.0.1',
-        user='root',
-        password='Nitn3lav3al0cin',
-        database='todousers',
-        port = 3306
-    )
     try:
         return pymysql.connect(
             host='127.0.0.1',
