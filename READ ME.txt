@@ -1,0 +1,17 @@
+This project of mine is incomplete in the sense that is not hosted yet. I still have to resolve the remote connection. So for local use, you need to have MySQL Workbench, to create a database and then the tables below:
+
+CREATE TABLE users (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    user_name VARCHAR(255) NOT NULL,
+    user_email VARCHAR(255) NOT NULL,
+    user_password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE tasks (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    user_id INT(11) NOT NULL,
+    content VARCHAR(250) NOT NULL,
+    checked TINYINT(1) DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
