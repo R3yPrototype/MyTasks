@@ -30,17 +30,21 @@ document.addEventListener('DOMContentLoaded', function() {
             editInput.value = currentText;
             let saveButton = document.createElement('button');
             saveButton.textContent = 'Save';
+
+            // Replace the Edit button with Save button
             event.target.replaceWith(saveButton);
 
+            // Insert input field and remove the current text span
             listItem.insertBefore(editInput, span);
             span.remove();
 
             saveButton.addEventListener('click', function() {
                 let newText = editInput.value;
+
                 fetch(`/edit/${listItem.getAttribute('data-task-id')}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ task_content: newText })
+                    body: JSON.stringify({ content: newText })  // Changed 'task_content' to 'content'
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -49,7 +53,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         newSpan.textContent = newText;
                         listItem.insertBefore(newSpan, editInput);
                         editInput.remove();
-                        saveButton.replaceWith(event.target);
+
+                        // Replace Save button with a new Edit button
+                        let editButton = document.createElement('button');
+                        editButton.textContent = 'Edit';
+                        editButton.classList.add('edit-button');
+                        saveButton.replaceWith(editButton);
                     } else {
                         alert('Failed to update the task.');
                     }
@@ -63,13 +72,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target.type === 'checkbox') {
             let listItem = event.target.closest('li');
             let taskId = listItem.getAttribute('data-task-id');
-            let isCompleted = event.target.checked;
-
+            let isChecked = event.target.checked;
 
             fetch(`/update/${taskId}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ is_completed: isCompleted })
+                body: JSON.stringify({ checked: isChecked })  // Changed 'is_completed' to 'checked'
             }).then(response => {
                 if (!response.ok) {
                     alert('Failed to update the task status.');
@@ -95,5 +103,6 @@ document.getElementById('logoutButton').addEventListener('click', function() {
         }
     });
 });
+
 
 
