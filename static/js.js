@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 fetch(`/edit/${listItem.getAttribute('data-task-id')}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ content: newText })  // Changed 'task_content' to 'content'
+                    body: JSON.stringify({ content: newText }) 
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch(`/update/${taskId}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ checked: isChecked })  // Changed 'is_completed' to 'checked'
+                body: JSON.stringify({ checked: isChecked })  
             }).then(response => {
                 if (!response.ok) {
                     alert('Failed to update the task status.');
